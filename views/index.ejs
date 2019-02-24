@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style>
+      body {
+        background: rgb(<%= randomColor.x %>,<%= randomColor.y %>,<%= randomColor.z %>)
+      }
+    </style>
+  </head>
+  <body>
+    This color is:<span id="correctValue"><%= guessColor %></span>
+    x:<span id="x"><%= randomColor.x %></span>
+    y:<span id="y"><%= randomColor.y %></span>
+    z:<span id="z"><%= randomColor.z %></span>
+    <button onclick="trainCorrect()">Correct</button>
+    <button onclick="trainIncorrect()">This is correct</button>
+    <input type="text" id="trainValue">
+  </body>
+  <script type="text/javascript">
+    let currentColor = {
+      x: document.getElementById("x").innerText,
+      y: document.getElementById("y").innerText,
+      z: document.getElementById("z").innerText
+    };
+    function trainCorrect() {
+      currentColor.color = document.getElementById("correctValue").innerText;
+      train();
+    }
+    function trainIncorrect() {
+      console.log("train");
+      currentColor.color = document.getElementById("trainValue").value;
+      train();
+    }
+
+    function train() {
+      let fetchSettings = { method: "POST", headers: { "Content-Type": "application/json"}, body: JSON.stringify(currentColor)}
+      fetch("/train", fetchSettings)
+      window.location = "/";
+    }
+
+  </script>
+</html>
